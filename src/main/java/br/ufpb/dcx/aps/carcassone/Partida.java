@@ -9,9 +9,10 @@ public class Partida {
 	private Tile proximoTile;
 	private TabuleiroFlexivel tabuleiro = new TabuleiroFlexivel("  ");
 
-	Partida(BolsaDeTiles tiles) {
+	Partida(BolsaDeTiles tiles, Cor ...sequencia) {
 		this.tiles = tiles;
 		pegarProximoTile();
+	
 	}
 
 	public String relatorioPartida() {
