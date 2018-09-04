@@ -15,6 +15,7 @@ public class Partida {
 	private String statusTurno= "Tile_Posicionado";
 	private ArrayList<Jogador> jogadores = new ArrayList<>();
 	private int turnos =0;
+	;
 
 	Partida(BolsaDeTiles tiles, Cor ...sequencia) {
 		this.tiles = tiles;
@@ -39,10 +40,11 @@ public class Partida {
 
 
 	public String relatorioTurno() {
+		
 		return "Jogador: "+jogadores.get(this.jogadorAtual).getCor()+
 				"\nTile: "+proximoTile.getId()+proximoTile.getOrientacao().getAbreviacao()+"\nStatus: "+this.statusTurno;
+		
 	}
-
 	public Partida girarTile() {
 		proximoTile.girar();
 		return this;
@@ -54,16 +56,28 @@ public class Partida {
 		if(turnos==1) {
 			this.tabuleiro.adicionarPrimeiroTile(proximoTile);
 		}
+		
 		proximoTile.reset();
 	}
 
 	public Partida finalizarTurno() {
-		pegarProximoTile();
+		if(this.jogadorAtual==this.jogadores.size()-1) {	
+			this.jogadorAtual=0;
+			}
+		else {
+			this.jogadorAtual+=1;
+		}
+		this.pegarProximoTile();
+
+
 		return this;
-	}
+		}
+	
+	
 
 	public Partida posicionarTile(Tile tileReferencia, Lado ladoTileReferencia) {
 		tabuleiro.posicionar(tileReferencia, ladoTileReferencia, proximoTile);
+		this.statusTurno="Tile_Posicionado";
 		return this;
 	}
 
