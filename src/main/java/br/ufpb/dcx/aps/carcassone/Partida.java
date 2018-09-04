@@ -71,7 +71,9 @@ public class Partida {
 		if(proximoTile==null) {
 			this.finalizarPartida();
 		}
-		proximoTile.reset();
+		else {
+		 proximoTile.reset();
+		}
 	}
 
 	public Partida finalizarTurno() {
