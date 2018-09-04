@@ -1,5 +1,7 @@
 package br.ufpb.dcx.aps.carcassone;
 
+import java.util.ArrayList;
+
 import br.ufpb.dcx.aps.carcassone.tabuleiro.TabuleiroFlexivel;
 import br.ufpb.dcx.aps.carcassone.tabuleiro.Tile;
 
@@ -7,20 +9,38 @@ public class Partida {
 
 	private BolsaDeTiles tiles;
 	private Tile proximoTile;
+	private int jogadorAtual;
 	private TabuleiroFlexivel tabuleiro = new TabuleiroFlexivel("  ");
+	private String statusPartida;
+	private String statusTurno= "Tile_Posicionado";
+	private ArrayList<Jogador> jogadores = new ArrayList<>();
+	private int turnos =0;
 
 	Partida(BolsaDeTiles tiles, Cor ...sequencia) {
 		this.tiles = tiles;
 		pegarProximoTile();
-	
+		this.statusPartida = "Em_Andamento";
+		for(int k=0; k< sequencia.length; k++) {
+			Jogador jogador = new Jogador(sequencia[k]);
+			jogadores.add(jogador);
+			}
 	}
 
 	public String relatorioPartida() {
-		return null;
+		String relatorio = "Status: "+this.statusPartida +"\nJogadores: " ;
+		for(int k=0; k<jogadores.size(); k++) {
+			relatorio += jogadores.get(k).toString();
+			if(k<jogadores.size()-1) {	
+				relatorio+="; ";
+			}
+		}
+		return relatorio;
 	}
 
+
 	public String relatorioTurno() {
-		return null;
+		return "Jogador: "+jogadores.get(this.jogadorAtual).getCor()+
+				"\nTile: "+proximoTile.getId()+proximoTile.getOrientacao().getAbreviacao()+"\nStatus: "+this.statusTurno;
 	}
 
 	public Partida girarTile() {
@@ -30,6 +50,10 @@ public class Partida {
 
 	private void pegarProximoTile() {
 		proximoTile = tiles.pegar();
+		turnos+=1;
+		if(turnos==1) {
+			this.tabuleiro.adicionarPrimeiroTile(proximoTile);
+		}
 		proximoTile.reset();
 	}
 
@@ -76,6 +100,7 @@ public class Partida {
 	}
 
 	public String relatorioTabuleiro() {
-		return null;
+		return tabuleiro.toString();
+	
 	}
 }

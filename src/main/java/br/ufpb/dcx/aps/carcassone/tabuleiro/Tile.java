@@ -34,7 +34,7 @@ public class Tile {
 		return tipoTile;
 	}
 
-	Lado getOrientacao() {
+	public Lado getOrientacao() {
 		return orientacao;
 	}
 
