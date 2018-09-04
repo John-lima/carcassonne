@@ -69,7 +69,7 @@ public class Partida {
 		}
 		this.pegarProximoTile();
 
-
+		this.statusTurno="Início_Turno";
 		return this;
 		}
 	
