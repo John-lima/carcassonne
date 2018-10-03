@@ -578,6 +578,84 @@ public class JogoTest {
 		Assert.assertEquals("30(NO,NE) 51(NO,NE,SE-VERMELHO)\n30(SO,SE) 02(NO,NE) 51(SO)", partida.getCampos());
 	}
 	
+	/** posicionar meeple em cidade, quando não há cidade**/
+	@Test
+	public void posicionarMeepleCidadeSemCidade() {
+		mockarTiles(tiles, t30, t49);
+		Partida partida = jogo.criarPartida(tiles, AMARELO, VERMELHO);
+		partida.finalizarTurno();
+		girar(partida, 2);
+		partida.posicionarTile(t30, SUL);
+
+		ocorreExcecaoJogo(() -> partida.posicionarMeepleEstrada(SUL),
+				"Impossível posicionar meeple em estrada pois o lado Sul do tile 49 é Estrada");
+
+		ocorreExcecaoJogo(() -> partida.posicionarMeepleEstrada(NORTE),
+				"Impossível posicionar meeple em estrada pois o lado Norte do tile 49 é Campo");
+	}
+	/** posicionar meeple em cidade, quando não há cidade**/
+	@Test
+	public void posicionarMeepleEmCidade() {
+		mockarTiles(tiles, t30, t49);
+		Partida partida = jogo.criarPartida(tiles, AMARELO, VERMELHO);
+		partida.finalizarTurno();
+		girar(partida, 2);
+		partida.posicionarTile(t30, SUL);
+
+		ocorreExcecaoJogo(() -> partida.posicionarMeepleEstrada(SUL),
+				"Impossível posicionar meeple em estrada pois o lado Sul do tile 49 é Estrada");
+
+		ocorreExcecaoJogo(() -> partida.posicionarMeepleEstrada(NORTE),
+				"Impossível posicionar meeple em estrada pois o lado Norte do tile 49 é Campo");
+	}
+	
+	/** posicionar meeple em cidade com dois tiles**/
+	@Test
+	public void cidadeComDoisTilesMeeple() {
+		mockarTiles(tiles, t30, t11);
+		Partida partida = jogo.criarPartida(tiles, AMARELO, VERMELHO);
+		girar(partida, 1);
+
+		partida.posicionarTile(t30, NORTE);
+		Assert.assertEquals("30(N) 11(S)", partida.getEstradas());
+
+		partida.posicionarMeepleEstrada(SUL);
+		Assert.assertEquals("30(N) 11(S-AMARELO)", partida.getEstradas());
+
+		partida.finalizarTurno();
+		Assert.assertEquals("30(N) 64(S-AMARELO)", partida.getEstradas());
+		
+		verificarRelatorioPartida(partida, "Partida_Finalizada", "AMARELO(0,6); VERMELHO(0,7)");
+		ocorreExcecaoJogo(() -> partida.relatorioTurno(), "Partida finalizada");
+		verificarRelatorioTabuleiro(partida, "30N11N");
+	}
+	/** Posicionar meeple com cidade ocupada**/
+	@Test
+	public void posicionarMeepleEmCidadeOcupada() {
+		mockarTiles(tiles, t30, t43, t44);
+		Partida partida = jogo.criarPartida(tiles, AMARELO, VERMELHO);
+		girar(partida, 1);
+
+		partida.posicionarTile(t30, SUL);
+		partida.posicionarMeepleEstrada(LESTE);
+		partida.finalizarTurno();
+		Assert.assertEquals("43(L-AMARELO)", partida.getEstradas());
+		
+		partida.posicionarTile(t44, LESTE);
+		partida.posicionarMeepleEstrada(OESTE);
+		partida.finalizarTurno();
+		
+		partida.posicionarTile(t64, LESTE);
+		Assert.assertEquals("30(O,L) 64(O,L-AMARELO) 52(N,O)\n51(O-VERMELHO,S)", partida.getEstradas());
+		
+		ocorreExcecaoJogo(() -> partida.posicionarMeepleEstrada(OESTE),
+				"Impossível posicionar meeple pois a estrada já está ocupada pelo meeple AMARELO no lado Leste do tile 64");
+		
+		verificarRelatorioPartida(partida, "Em_Andamento", "AMARELO(0,6); VERMELHO(0,6)");
+		verificarRelatorioTurno(partida, "AMARELO", "52L", "Tile_Posicionado");
+		verificarRelatorioTabuleiro(partida, "30N64L52L\n51N");
+
+	}
 	private void girar(Partida partida, int quantidade) {
 		for (int i = 0; i < quantidade; i++) {
 			partida.girarTile();
