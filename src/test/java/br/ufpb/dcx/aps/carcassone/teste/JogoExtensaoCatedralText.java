@@ -44,6 +44,18 @@ public class JogoExtensaoCatedralText {
 		ocorreExcecaoJogo(() -> partida.posicionarMeepleCidade(LESTE),
 				"Impossível posicionar meeple em cidade pois o lado Norte do tile 29 é Estrada");
 	}
+	// teste2
+		@Test
+		public void verificarCidade() {
+			mockarTiles(tiles, t30);
+			Partida partida = jogo.criarPartida(tiles, AMARELO, VERMELHO);
+
+			Assert.assertEquals("30(NO,NE)", partida.getCidades());
+
+			ocorreExcecaoJogo(() -> partida.posicionarMeepleCidade(NORTE), "Impossível posicionar meeple na peça inicial");
+
+			Assert.assertEquals("30(NO,NE)", partida.getCidades());
+		}
 
 	
 	private void girar(Partida partida, int quantidade) {
