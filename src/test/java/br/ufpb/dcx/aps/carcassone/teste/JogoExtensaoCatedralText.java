@@ -76,6 +76,28 @@ public class JogoExtensaoCatedralText {
 			verificarRelatorioTabuleiro(partida, "30N01N");
 
 		}
+		// test4
+		@Test
+		public void cidadesDesconexasMeeple() {
+			mockarTiles(tiles, t30, t29, t21);
+			Partida partida = jogo.criarPartida(tiles, AMARELO, VERMELHO);
+			girar(partida, 2);
+
+			partida.posicionarTile(t30, NORTE);
+			partida.finalizarTurno();
+			girar(partida, 1);
+
+			partida.posicionarTile(t30, SUL);
+			Assert.assertEquals("30(NO,NE) 29(SE,SO)\n21(NE,SE)", partida.getCidades());
+
+			partida.posicionarMeepleCidade(LESTE);
+			Assert.assertEquals("30(NO,NE) 29(Se,SO)\n21(NE,SE-VERMELHO)", partida.getCidades());
+
+			verificarRelatorioPartida(partida, "Em_Andamento", "AMARELO(0,7); VERMELHO(0,6)");
+			verificarRelatorioTurno(partida, "VERMELHO", "21S", "Meeple_Posicionado");
+			verificarRelatorioTabuleiro(partida, "30N29N/n21S");
+
+		}
 
 	
 	private void girar(Partida partida, int quantidade) {
