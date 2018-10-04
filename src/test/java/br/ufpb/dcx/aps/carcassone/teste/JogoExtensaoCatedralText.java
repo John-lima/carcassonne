@@ -226,6 +226,23 @@ public class JogoExtensaoCatedralText {
 
 			verificarRelatorioPartida(partida, "Partida_Finalizada", "AMARELO(0,7); VERMELHO(0,7)");
 		}
+		// teste11
+		@Test
+		public void finalizarPartidaComcidadeImcompletaComCatedralSemMeeple() {
+			mockarTiles(tiles, t30, t73, t29);
+			Partida partida = jogo.criarPartida(tiles, AMARELO, VERMELHO);
+
+			partida.posicionarTile(t30, NORTE);
+
+			partida.finalizarTurno();
+			girar(partida, 1);
+			partida.posicionarTile(t73, OESTE);
+
+			partida.finalizarTurno();
+			partida.finalizarPartida();
+
+			verificarRelatorioPartida(partida, "Partida_Finalizada", "AMARELO(0,7); VERMELHO(0,7)");
+		}
 
 	
 	private void girar(Partida partida, int quantidade) {
