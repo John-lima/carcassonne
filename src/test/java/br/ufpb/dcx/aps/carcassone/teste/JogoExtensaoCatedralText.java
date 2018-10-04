@@ -98,6 +98,27 @@ public class JogoExtensaoCatedralText {
 			verificarRelatorioTabuleiro(partida, "30N29N/n21S");
 
 		}
+		// teste5
+		@Test
+		public void posicionarMeepleEmCidadeOcupada() {
+			mockarTiles(tiles, t30, t01, t29);
+			Partida partida = jogo.criarPartida(tiles, AMARELO, VERMELHO);
+
+			partida.posicionarTile(t30, NORTE);
+			partida.posicionarMeepleCidade(LESTE);
+			Assert.assertEquals("30(NO,NE) 01(SE,NO,NE,SO-AMARELO)", partida.getCidades());
+			partida.finalizarTurno();
+
+			girar(partida, 3);
+			partida.posicionarTile(t01, LESTE);
+			ocorreExcecaoJogo(() -> partida.posicionarMeepleEstrada(OESTE),
+					"Impossível posicionar meeple pois a ciadde já  está ocupada pelo meeple AMARELO no lado Leste do tile 01");
+
+			verificarRelatorioPartida(partida, "Em_Andamento", "AMARELO(0,6); VERMELHO(0,7)");
+			verificarRelatorioTurno(partida, "AMARELO", "29L", "Tile_Posicionado");
+			verificarRelatorioTabuleiro(partida, "30N01N29L");
+
+		}
 
 	
 	private void girar(Partida partida, int quantidade) {
