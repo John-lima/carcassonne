@@ -387,6 +387,40 @@ public class JogoExtensaoCatedralText {
 					
 					verificarRelatorioPartida(partida, "Partida_Finalizada", "AMARELO(0,7); VERMELHO(0,7)");
 				}
+				// teste17
+				@Test
+				public void cidadeImcompletaComDoisMepplesSemCatedral() {
+					mockarTiles(tiles, t30, t51, t29, t52, t53, t28, t01);
+					Partida partida = jogo.criarPartida(tiles, AMARELO, VERMELHO);
+
+					girar(partida, 1);
+					partida.posicionarTile(t30, LESTE);
+					partida.finalizarTurno();
+					
+					girar(partida, 3);
+					partida.posicionarTile(t51, NORTE);
+					partida.posicionarMeepleCidade(OESTE);
+					partida.finalizarTurno();
+					
+					girar(partida, 2);
+					partida.posicionarTile(t30, OESTE);
+					partida.finalizarTurno();
+					
+					partida.posicionarTile(t52, OESTE);
+					partida.finalizarTurno();
+					
+					girar(partida, 1);
+					partida.posicionarTile(t52, NORTE);
+					partida.posicionarMeepleCidade(LESTE);
+					partida.finalizarTurno();
+					
+					partida.posicionarTile(t30, NORTE);
+					partida.finalizarTurno();
+					
+					partida.finalizarPartida();
+					
+					verificarRelatorioPartida(partida, "Partida_Finalizada", "AMARELO(10,7); VERMELHO(10,7)");
+				}
 
 	
 	private void girar(Partida partida, int quantidade) {
