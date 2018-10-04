@@ -187,6 +187,28 @@ public class JogoExtensaoCatedralText {
 
 			verificarRelatorioPartida(partida, "Em_Andamento", "AMARELO(0,7); VERMELHO(0,7)");
 		}
+		// teste9
+		@Test
+		public void cidadeCompletaSemCatedralSemMeeple() {
+			mockarTiles(tiles, t30, t01, t29, t28, t27);
+			Partida partida = jogo.criarPartida(tiles, AMARELO, VERMELHO);
+
+			partida.posicionarTile(t30, NORTE);
+
+			partida.finalizarTurno();
+			girar(partida, 1);
+			partida.posicionarTile(t01, OESTE);
+
+			partida.finalizarTurno();
+			girar(partida, 2);
+			partida.posicionarTile(t01, NORTE);
+
+			partida.finalizarTurno();
+			girar(partida, 3);
+			partida.posicionarTile(t01, LESTE);
+
+			verificarRelatorioPartida(partida, "Em_Andamento", "AMARELO(0,7); VERMELHO(0,7)");
+		}
 
 	
 	private void girar(Partida partida, int quantidade) {
